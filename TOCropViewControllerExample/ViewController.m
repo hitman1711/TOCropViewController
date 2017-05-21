@@ -38,8 +38,9 @@
 #pragma mark - Image Picker Delegate -
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
 {
-    TOCropViewController *cropController = [[TOCropViewController alloc] initWithCroppingStyle:self.croppingStyle image:image];
+    TOCropViewController *cropController = [[TOCropViewController alloc] initWithImage:image params:CustomizationParams.lightParams];
     cropController.delegate = self;
+    
     
     // -- Uncomment these if you want to test out restoring to a previous crop setting --
     //cropController.angle = 90; // The initial angle in which the image will be rotated

@@ -38,6 +38,7 @@
 @property (nonatomic, strong) TOCropToolbar *toolbar;
 @property (nonatomic, strong, readwrite) TOCropView *cropView;
 @property (nonatomic, strong) UIView *toolbarSnapshotView;
+@property (nonatomic, strong) CustomizationParams *customizationParams;
 
 /* Transition animation controller */
 @property (nonatomic, copy) void (^prepareForTransitionHandler)(void);
@@ -71,12 +72,13 @@
 
 @implementation TOCropViewController
 
-- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image
+- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image params:(CustomizationParams *)params
 {
     NSParameterAssert(image);
 
     self = [super init];
     if (self) {
+        self.customizationParams = params;
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         self.modalPresentationStyle = UIModalPresentationFullScreen;
         self.automaticallyAdjustsScrollViewInsets = NO;
@@ -93,9 +95,19 @@
     return self;
 }
 
+- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image
+{
+    return [self initWithCroppingStyle:style image:image params:CustomizationParams.defaultParams];
+}
+
 - (instancetype)initWithImage:(UIImage *)image
 {
     return [self initWithCroppingStyle:TOCropViewCroppingStyleDefault image:image];
+}
+
+- (instancetype)initWithImage:(UIImage *)image params:(CustomizationParams *)params
+{
+    return [self initWithCroppingStyle:TOCropViewCroppingStyleDefault image:image params:params];
 }
 
 - (void)viewDidLoad
@@ -870,7 +882,7 @@
 
 - (TOCropView *)cropView {
     if (!_cropView) {
-        _cropView = [[TOCropView alloc] initWithCroppingStyle:self.croppingStyle image:self.image];
+        _cropView = [[TOCropView alloc] initWithCroppingStyle:self.croppingStyle image:self.image params: _customizationParams];
         _cropView.delegate = self;
         _cropView.frame = [UIScreen mainScreen].bounds;
         _cropView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

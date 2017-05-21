@@ -24,8 +24,6 @@
 #import "TOCropOverlayView.h"
 #import "TOCropScrollView.h"
 
-#define TOCROPVIEW_BACKGROUND_COLOR [UIColor colorWithWhite:0.12f alpha:1.0f]
-
 static const CGFloat kTOCropViewPadding = 14.0f;
 static const NSTimeInterval kTOCropTimerDuration = 0.8f;
 static const CGFloat kTOCropViewMinimumBoxSize = 42.0f;
@@ -106,6 +104,9 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 @property (nonatomic, assign) NSInteger restoreAngle;
 @property (nonatomic, assign) CGRect    restoreImageCropFrame;
 
+
+@property (nonatomic, strong) CustomizationParams *customizationParams;
+
 - (void)setup;
 
 /* Image layout */
@@ -141,11 +142,12 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 
 @implementation TOCropView
 
-- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image
+- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image params:(CustomizationParams*)params
 {
     if (self = [super init]) {
         _image = image;
         _croppingStyle = style;
+        _customizationParams = params;
         [self setup];
     }
     
@@ -157,6 +159,16 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     return [self initWithCroppingStyle:TOCropViewCroppingStyleDefault image:image];
 }
 
+- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image
+{
+    return [self initWithCroppingStyle:style image:image params:CustomizationParams.defaultParams];
+}
+
+- (instancetype)initWithImage:(UIImage *)image params:(CustomizationParams *)params
+{
+    return [self initWithCroppingStyle:TOCropViewCroppingStyleDefault image:image params:params];
+}
+
 - (void)setup
 {
     __weak typeof(self) weakSelf = self;
@@ -165,7 +177,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     
     //View properties
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.backgroundColor = TOCROPVIEW_BACKGROUND_COLOR;
+    self.backgroundColor = _customizationParams.cropViewBackgroundColor;
     self.cropBoxFrame = CGRectZero;
     self.applyInitialCroppedImageFrame = NO;
     self.editing = NO;
@@ -211,7 +223,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     
     //Translucency View
     if (NSClassFromString(@"UIVisualEffectView")) {
-        self.translucencyEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        self.translucencyEffect = [UIBlurEffect effectWithStyle:_customizationParams.backgroundBlurStyle];
         self.translucencyView = [[UIVisualEffectView alloc] initWithEffect:self.translucencyEffect];
         self.translucencyView.frame = self.bounds;
     }

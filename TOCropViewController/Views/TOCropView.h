@@ -22,6 +22,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TOCropOverlayView.h"
+#include "CustomizationParams.h"
 
 typedef NS_ENUM(NSInteger, TOCropViewCroppingStyle) {
     TOCropViewCroppingStyleDefault,     // The regular, rectangular crop box
@@ -146,6 +147,11 @@ typedef NS_ENUM(NSInteger, TOCropViewCroppingStyle) {
  Create a new instance of the crop view with the specified image and cropping
  */
 - (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image;
+
+/**
+ Create a new instance of the crop view with the specified image, cropping and customization params
+ */
+- (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image params:(CustomizationParams*_Nonnull)params;
 
 /**
  When performing large size transitions (eg, orientation rotation),
