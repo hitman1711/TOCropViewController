@@ -293,6 +293,15 @@ typedef NS_ENUM(NSInteger, TOCropViewControllerToolbarPosition) {
 
 
 /**
+ Creates a new instance of a crop view controller with the supplied image and cropping style
+ 
+ @param style The cropping style that will be used with this view controller (eg, rectangular, or circular)
+ @param image The image that will be cropped
+ */
+- (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image params:(nonnull CustomizationParams *)params NS_SWIFT_NAME(init(croppingStyle:image:params:));
+
+
+/**
  Resets object of TOCropViewController class as if user pressed reset button in the bottom bar themself
  */
 - (void)resetCropViewLayout;
