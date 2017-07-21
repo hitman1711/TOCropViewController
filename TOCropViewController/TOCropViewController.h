@@ -293,10 +293,11 @@ typedef NS_ENUM(NSInteger, TOCropViewControllerToolbarPosition) {
 
 
 /**
- Creates a new instance of a crop view controller with the supplied image and cropping style
+ Creates a new instance of a crop view controller with the supplied image, cropping style and Customization parameters
  
  @param style The cropping style that will be used with this view controller (eg, rectangular, or circular)
  @param image The image that will be cropped
+ @param params The customization parameters model object
  */
 - (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image params:(nonnull CustomizationParams *)params NS_SWIFT_NAME(init(croppingStyle:image:params:));
 
